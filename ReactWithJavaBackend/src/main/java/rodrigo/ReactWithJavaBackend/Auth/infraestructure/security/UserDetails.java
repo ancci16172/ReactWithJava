@@ -1,4 +1,4 @@
-package rodrigo.ReactWithJavaBackend.Auth.infraestructure.User;
+package rodrigo.ReactWithJavaBackend.Auth.infraestructure.security;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -14,6 +14,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
         this.password = domainUser.getPassword();
         this.username = domainUser.getUsername();
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

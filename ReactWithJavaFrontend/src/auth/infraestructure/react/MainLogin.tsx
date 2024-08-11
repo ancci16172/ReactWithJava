@@ -1,14 +1,17 @@
 import  React, { useState } from 'react';
+import { useAuthContext } from '../context/AuthContext';
 
 export function MainLogin() {
-  const [user, setUser] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const {login} = useAuthContext();
 
-  const handleLogin = (e: React.FormEvent) => {
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log(`User: ${user}, Password: ${password}`);
-
+    console.log(`User: ${username}, Password: ${password}`);
+    await login(username, password);
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -22,8 +25,8 @@ export function MainLogin() {
           <input
             type="text"
             id="username"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-full"
             required
           />

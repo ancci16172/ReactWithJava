@@ -1,10 +1,14 @@
+import { AuthContext, AuthContextProvider } from "./auth/infraestructure/context/AuthContext"
 import { MainLogin } from "./auth/infraestructure/react/MainLogin"
 
 function App() {
   
   
   return (
-    <MainLogin></MainLogin>
+    <AuthContextProvider>
+
+      <MainLogin></MainLogin>
+    </AuthContextProvider>
   )
 }
 
