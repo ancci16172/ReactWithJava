@@ -1,18 +1,25 @@
 import  React, { useState } from 'react';
 import { useAuthContext } from '../context/AuthContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export function MainLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {login} = useAuthContext();
-
+  const {login,isAuthenticated} = useAuthContext();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     console.log(`User: ${username}, Password: ${password}`);
     await login(username, password);
+    console.log({isAuthenticated})
+    if(isAuthenticated)
+      navigate('/service_picker')
   }
+
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
     <div className="bg-white p-8 rounded shadow-lg w-[90%] max-w-md">

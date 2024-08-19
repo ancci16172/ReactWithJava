@@ -27,6 +27,7 @@ public class AuthenticationProviderConfig {
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(new NotActionPasswordEncoder());
+
         //Para desserializar
 
         daoAuthenticationProvider.setUserDetailsService(
@@ -35,6 +36,7 @@ public class AuthenticationProviderConfig {
                     if(user == null) throw new UsernameNotFoundException("User not fount on Authentication provider");
                     return new UserDetails(user);
                 });
+
 
         return daoAuthenticationProvider;
 

@@ -9,10 +9,16 @@ public class UserDetails implements org.springframework.security.core.userdetail
     private String password;
     private String username; //Esto respresenta el identificado unico
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    private Integer userId;
 
     public UserDetails(rodrigo.ReactWithJavaBackend.Auth.domain.User domainUser){
         this.password = domainUser.getPassword();
         this.username = domainUser.getUsername();
+        this.userId = domainUser.getUserId();
     }
 
 
@@ -21,6 +27,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
+
+
 
     @Override
     public String getPassword() {

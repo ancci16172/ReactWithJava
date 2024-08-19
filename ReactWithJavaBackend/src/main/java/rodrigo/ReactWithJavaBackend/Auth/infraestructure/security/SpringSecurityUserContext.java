@@ -17,7 +17,9 @@ public class SpringSecurityUserContext implements UserContext {
 
         var username = userDetails.getUsername();
         var password = userDetails.getPassword();
-        return new User(username, password);
+        var userId = userDetails.getUserId();
+
+        return new User(username, password,userId);
 
     }
 

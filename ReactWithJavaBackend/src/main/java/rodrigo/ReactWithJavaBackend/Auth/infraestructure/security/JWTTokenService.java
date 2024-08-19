@@ -26,7 +26,7 @@ public class JWTTokenService implements TokenGenerator {
                 .setClaims(new HashMap<String, Object>())
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24*6))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

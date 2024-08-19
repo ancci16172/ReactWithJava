@@ -6,4 +6,4 @@ spring:
     username: root
     password:
     # driver-class-name: org.springframework.jdbc.datasource.DriverManagerDataSource
-logging.level.org.springframework.security: TRACE
+logging.level.org.springframework.security: off

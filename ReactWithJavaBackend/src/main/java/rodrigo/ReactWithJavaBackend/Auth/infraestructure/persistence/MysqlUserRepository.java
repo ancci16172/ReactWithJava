@@ -21,7 +21,11 @@ public class MysqlUserRepository implements UserRepository {
         User user =  jdbcTemplate.queryForObject(
                 "SELECT * FROM usuarios WHERE username = ? AND password = ?",
                 new Object[]{username, password},
-                (rs, rowNum) -> new User(rs.getString("username"), rs.getString("password"))
+                (rs, rowNum) -> new User(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("USER_ID")
+                )
         );
 
         System.out.println("Objeto obtenido por jdbc " + user);
@@ -30,10 +34,14 @@ public class MysqlUserRepository implements UserRepository {
 
     @Override
     public User getByUsername(String username) {
-        var user = jdbcTemplate.queryForObject(
+        User user = jdbcTemplate.queryForObject(
                 "SELECT * from usuarios where username=?",
                 new Object[]{username},
-                (rs,rowNum) -> new User(rs.getString("username"), rs.getString("password")));
+                (rs,rowNum) -> new User(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("USER_ID"))
+                );
 
         return user;
     }

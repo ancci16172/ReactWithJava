@@ -1,4 +1,4 @@
-package rodrigo.ReactWithJavaBackend.Auth.application;
+package rodrigo.ReactWithJavaBackend.Auth.application.check;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

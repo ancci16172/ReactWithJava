@@ -2,12 +2,14 @@
 import React, { createContext, ReactNode, useState } from 'react';
 import { ApiAuthRepository } from '../repository/ApiAuthRepository';
 import { loginService } from '../../application/login/login';
+import { useAuthentication } from '../hook/useAuthentication';
+import { User } from '../../domain/User';
 
 interface AuthContextData {
-  user: string;
+  user: User | null;
   isAuthenticated: boolean;
-  setUser: (newUser: string) => void;
   login: (username: string, password: string) => Promise<void>;
+  isLoading: boolean;
 }
 
 interface AuthProviderProps {
@@ -18,15 +20,18 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
     const authRepository = new ApiAuthRepository();
-    const [user, setUser] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    const {isAuthenticated, user,isLoading,checkAuthentication} = useAuthentication(authRepository);
+
+
+    
 
     const login = async (username: string, password: string) => {
       try {
         
         const AuthToken = await loginService(authRepository)(username, password);
         console.log(AuthToken);
+        await checkAuthentication()
       } catch (error) {
         console.log(error);
       }      
@@ -35,7 +40,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
 
     return (
-        <AuthContext.Provider value={{ user, setUser,isAuthenticated ,login}}>
+        <AuthContext.Provider value={{ isAuthenticated ,login, user,isLoading}}>
         {children}
         </AuthContext.Provider>
     );

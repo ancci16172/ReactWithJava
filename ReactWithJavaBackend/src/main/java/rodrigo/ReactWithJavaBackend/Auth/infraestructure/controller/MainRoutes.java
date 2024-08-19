@@ -1,12 +1,12 @@
 package rodrigo.ReactWithJavaBackend.Auth.infraestructure.controller;
 
-import org.apache.coyote.Response;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rodrigo.ReactWithJavaBackend.Auth.application.AuthResponse;
-import rodrigo.ReactWithJavaBackend.Auth.application.CheckLoggedInService;
+import rodrigo.ReactWithJavaBackend.Auth.application.check.CheckLoggedInService;
 import rodrigo.ReactWithJavaBackend.Auth.application.LoginService;
 import rodrigo.ReactWithJavaBackend.Auth.domain.User;
 
@@ -26,7 +26,7 @@ public class MainRoutes {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserParams params){
+    public ResponseEntity<AuthResponse> login(@RequestBody UserParams params, HttpServletResponse httpServletResponse){
         try {
 
             System.out.println("PARAMS ON LOGIN " + params);
@@ -34,10 +34,16 @@ public class MainRoutes {
 
             AuthResponse response = loginService.run(params.username,params.password);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBasicAuth(response.getToken());
+            String token = response.getToken();
+            Cookie authTokenValueCookie = new Cookie("auth_token", token);
+            authTokenValueCookie.setSecure(true);
+            authTokenValueCookie.setAttribute("SameSite","none");
+            authTokenValueCookie.setPath("/");
 
-            return ResponseEntity.ok().headers(headers).body(response);
+            httpServletResponse.addCookie(authTokenValueCookie);
+
+
+            return ResponseEntity.ok().body(response);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -45,11 +51,11 @@ public class MainRoutes {
         }
     }
 
-    @GetMapping("/checkIsLoggedIn")
-    public ResponseEntity<String> getCheckIsLoggedIn(){
+    @GetMapping("/verify")
+    public ResponseEntity<User> getCheckIsLoggedIn(){
         User user = checkLoggedInService.run();
 
-        return ResponseEntity.ok().body(user.toString());
+        return ResponseEntity.ok().body(user);
     }
 
 }
